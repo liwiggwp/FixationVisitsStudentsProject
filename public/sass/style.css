@@ -1,0 +1,91 @@
+body {
+  background: white;
+  font: 12pt Bradley Hand, cursive;
+}
+
+.conten {
+  width: 1000px;
+  margin: auto;
+}
+.conten .form-group {
+  margin-bottom: 10px;
+}
+
+.container-create {
+  width: 1000px;
+  margin: auto;
+}
+
+.card-img {
+  height: 300px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.d-flex {
+  margin-right: 20px;
+}
+
+h1 {
+  font: 16pt Bradley Hand, cursive;
+  text-align: center;
+  padding: 10px;
+}
+
+img {
+  width: 60px;
+  height: 60px;
+}
+
+.footer {
+  font: 16pt Bradley Hand, cursive;
+  margin-left: 20px;
+}
+
+.nav-item {
+  font: 16pt Bradley Hand, cursive;
+  margin-left: 20px;
+}
+
+.form-group {
+  padding: 5px;
+}
+
+/*border-color: #212529;*/
+.pagination > li > a, .pagination > li > span {
+  color: #212529;
+  border: 1px solid #212529;
+}
+
+.pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+  color: #fff;
+  background-color: #212529;
+  border-color: #212529;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  z-index: 2;
+  color: #fff;
+  background-color: #212529;
+  border-color: #212529;
+}
+
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #212529;
+  cursor: not-allowed;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #212529;
+  border-color: #212529;
+}
+
+/*# sourceMappingURL=style.css.map */

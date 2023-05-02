@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visits', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('is_visit')->default(false);
+        Schema::create('user_group', function (Blueprint $table) {
+            $table->integer('user_id')->index();
+            $table->integer('group_id')->index();
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visits');
+        Schema::dropIfExists('user_group');
     }
 };
