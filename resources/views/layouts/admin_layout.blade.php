@@ -31,12 +31,14 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{route('admin.lesson.index')}}" style="color: white">Расписание</a>
+                <a class="nav-link active" aria-current="page" href="{{route('admin.lesson.index')}}" style="color: white; font-size: 12pt; ">Расписание</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{route('admin.user.index')}}" style="color: white">Пользователи</a>
+                <a class="nav-link active" aria-current="page" href="{{route('admin.user.index')}}" style="color: white; font-size: 12pt;">Пользователи</a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" style="color: white; font-size: 12pt;">Группы</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page"  style="color: white; font-size: 20pt; margin-left: 200px">Admin-панель</a>
             </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LessonController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
