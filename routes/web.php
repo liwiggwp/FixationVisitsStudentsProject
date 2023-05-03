@@ -15,16 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[LessonController::class, 'index']);
-// Route::get('post/',[PostController::class, 'index'])->name('post.index');
-// Route::get('post/search',[PostController::class, 'search'])->name('post.search');
-// Route::get('post/create',[PostController::class, 'create'])->name('post.create');
-// Route::post('post/store',[PostController::class, 'store'])->name('post.store');
-// Route::get('post/show/{id}',[PostController::class, 'show'])->name('post.show');
-// Route::get('post/edit/{id}',[PostController::class, 'edit'])->name('post.edit');
-// Route::post('post/update/{id}',[PostController::class, 'update'])->name('post.update');
-// Route::delete('post/{id}', [PostController::class, 'destroy'])->name('post.destroy');
-// Route::post('comment/{post_id}',[CommentsController::class, 'save_comment']);
-
+Route::get('lesson/',[PostController::class, 'index'])->name('lesson.index');
+Route::get('lesson/create',[PostController::class, 'create'])->name('lesson.create');
+Route::post('lesson/store',[PostController::class, 'store'])->name('lesson.store');
+Route::get('lesson/show/{id}',[PostController::class, 'show'])->name('lesson.show');
+Route::get('lesson/edit/{id}',[PostController::class, 'edit'])->name('lesson.edit');
+Route::post('lesson/update/{id}',[PostController::class, 'update'])->name('lesson.update');
+Route::delete('lesson/{id}', [PostController::class, 'destroy'])->name('lesson.destroy');
 
 Auth::routes();
 
@@ -32,22 +29,22 @@ Auth::routes();
  Admin
  */
 
-// Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
-//     Route::get('/',[\App\Http\Controllers\Admin\HomeController::class,'index'])->name('homeAdmin');
-//     Route::get('admin/',[PostController::class, 'indexAdmin'])->name('admin.post.index');
-//     Route::get('/create',[PostController::class, 'cre'])->name('admin.post.create');
-//     Route::post('/store',[PostController::class, 'st'])->name('admin.post.store');
-//     Route::get('/show/{id}',[PostController::class, 'sh'])->name('admin.post.show');
+Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
+    Route::get('/',[\App\Http\Controllers\Admin\HomeController::class,'index'])->name('homeAdmin');
+    Route::get('admin/',[LessonController::class, 'indexAdmin'])->name('admin.lesson.index');
+    Route::get('/create',[LessonController::class, 'cre'])->name('admin.lesson.create');
+    Route::post('/store',[LessonController::class, 'st'])->name('admin.lesson.store');
+    Route::get('/show/{id}',[LessonController::class, 'sh'])->name('admin.lesson.show');
 
-//     Route::get('/edit/{id}',[PostController::class, 'ed'])->name('admin.post.edit');
-//     Route::post('/update/{id}',[PostController::class, 'upd'])->name('admin.post.update');
-//     Route::delete('/{id}', [PostController::class, 'destroyAdmin'])->name('admin.post.destroy');
-//     Route::get('/restore/{id}', [PostController::class, 'restoreAdmin'])->name('admin.post.restore');
+    Route::get('/edit/{id}',[LessonController::class, 'ed'])->name('admin.lesson.edit');
+    Route::post('/update/{id}',[LessonController::class, 'upd'])->name('admin.lesson.update');
+    Route::delete('/{id}', [LessonController::class, 'destroyAdmin'])->name('admin.lesson.destroy');
+    Route::get('/restore/{id}', [LessonController::class, 'restoreAdmin'])->name('admin.lesson.restore');
 
-//     Route::get('person/',[UserController::class, 'index'])->name('admin.user.index');
-//     Route::get('person/show/{id}',[UserController::class, 'view_post'])->name('admin.user.view');
-//     Route::get('person/restore/{id}', [UserController::class, 'restoreUser'])->name('admin.user.restore');
-// });
+    Route::get('person/',[UserController::class, 'index'])->name('admin.user.index');
+    Route::get('person/show/{id}',[UserController::class, 'view_post'])->name('admin.user.view');
+    Route::get('person/restore/{id}', [UserController::class, 'restoreUser'])->name('admin.user.restore');
+});
 
 // /*
 //  Profile
@@ -77,20 +74,5 @@ Auth::routes();
 //     ->middleware('verified')->name('timeline.index');
 
 
-
-
-Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

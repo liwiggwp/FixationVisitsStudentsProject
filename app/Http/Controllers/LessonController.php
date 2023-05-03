@@ -21,26 +21,14 @@ class LessonController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index(){
-        // $posts = Post::join('users','user_id','=','users.id')
-        // ->orderBy('posts.created_at', 'desc')
-        // ->Paginate(6);
-        //     return view('posts.index',compact('posts'));
-
-        // $posts = Lesson::join('groups','les_id','=','groups.id')
-        //     ->orderBy('lessons.created_at', 'desc')
-        //     ->Paginate(6);
-        //         return view('lessons.index',compact('lessons'));
-        // $lessons = Lesson::withTrashed()->Paginate(6);
-        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();
-        
-        return view('lessons.index',compact('lessons'));
-        
+        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();        
+        return view('lessons.index',compact('lessons'));        
     }
 
-    // public function indexAdmin(){
-    //     $posts=Lesson::withTrashed()->Paginate(6);
-    //     return view('admin.lessons.index',compact('lessons'));
-    // }
+    public function indexAdmin(){
+        $posts=Lesson::withTrashed()->Paginate(6);
+        return view('admin.lessons.index',compact('lessons'));
+    }
 
     // /**
     //  * Show the form for creating a new resource.
@@ -58,43 +46,43 @@ class LessonController extends Controller
     //  * @param  \Illuminate\Http\Request  $request
     //  * @return \Illuminate\Http\RedirectResponse
     //  */
-    // public function store(Request $request)
-    // {
-    //     $post = new Lesson();
-    //     // $post->user_id = Auth::user()->id;
-    //     $post->name = $request->name;
-    //     $post->class = $request->class;
-    //     $post->group_id = $request->group_id;
+    public function store(Request $request)
+    {
+        $post = new Lesson();
+        // $post->user_id = Auth::user()->id;
+        $post->name = $request->name;
+        $post->class = $request->class;
+        $post->teacher = $request->teacher;
+        $post->group_id = $request->group_id;
       
-    //     $post->save();
+        $post->save();
 
-    //     return redirect()->route('lesson.index')->with('success', 'Карточка успешна создана');
-    // }
+        return redirect()->route('lesson.index')->with('success', 'Карточка успешна создана');
+    }
 
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-    //  */
-    // public function show($id)
-    // {
-    //     $lesson = Lesson::join('users','user_id','=','users.id')
-    //         ->find($id);
-    //     return view('lessons.show',compact('lesson'));
-    // }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $lesson = Lesson::find($id);
+        return view('lessons.show',compact('lesson'));
+    }
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-    //  */
-    // public function edit($id)
-    // {
-    //     $post = Lesson::find($id);
-    //     return view('lessons.edit', compact('lesson'));
-    // }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $post = Lesson::find($id);
+        return view('lessons.edit', compact('lesson'));
+    }
 
     // /**
     //  * Update the specified resource in storage.
