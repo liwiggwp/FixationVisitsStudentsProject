@@ -11,8 +11,8 @@ class Group extends Model
 
     protected $fillable = [
         'name',
-        'group_id',
-        'les_id',
+        // 'group_id',
+        // 'les_id',
     ];
     protected $table = 'groups';
     protected $connection = 'mysql';

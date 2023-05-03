@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lesson;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,11 @@ class LessonController extends Controller
         //     ->orderBy('lessons.created_at', 'desc')
         //     ->Paginate(6);
         //         return view('lessons.index',compact('lessons'));
+        // $lessons = Lesson::withTrashed()->Paginate(6);
+        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();
+        
+        return view('lessons.index',compact('lessons'));
+        
     }
 
     // public function indexAdmin(){

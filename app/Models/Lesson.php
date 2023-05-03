@@ -13,6 +13,7 @@ class Lesson extends Model
     protected $fillable = [
         'name',
         'class',
+        'teacher',
         'group_id'
     ];
     protected $table = 'lessons';
