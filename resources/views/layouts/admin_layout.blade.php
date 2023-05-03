@@ -31,7 +31,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{route('admin.lesson.index')}}" style="color: white">Карточки</a>
+                <a class="nav-link active" aria-current="page" href="{{route('admin.lesson.index')}}" style="color: white">Расписание</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{route('admin.user.index')}}" style="color: white">Пользователи</a>

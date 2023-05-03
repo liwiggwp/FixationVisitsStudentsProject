@@ -20,14 +20,16 @@ class LessonController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index(){
-        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();        
-        return view('lessons.index',compact('lessons'));        
+    public function index()
+    {
+        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();
+        return view('lessons.index', compact('lessons'));
     }
 
-    public function indexAdmin(){
-        $posts=Lesson::withTrashed()->Paginate(6);
-        return view('admin.lessons.index',compact('lessons'));
+    public function indexAdmin()
+    {
+        $lessons = Lesson::withTrashed()->Paginate(6);
+        return view('admin.lessons.index', compact('lessons'));
     }
 
     // /**
@@ -48,14 +50,14 @@ class LessonController extends Controller
     //  */
     public function store(Request $request)
     {
-        $post = new Lesson();
+        $lesson = new Lesson();
         // $post->user_id = Auth::user()->id;
-        $post->name = $request->name;
-        $post->class = $request->class;
-        $post->teacher = $request->teacher;
-        $post->group_id = $request->group_id;
-      
-        $post->save();
+        $lesson->name = $request->name;
+        $lesson->class = $request->class;
+        $lesson->teacher = $request->teacher;
+        $lesson->group_id = $request->group_id;
+
+        $lesson->save();
 
         return redirect()->route('lesson.index')->with('success', 'Карточка успешна создана');
     }
@@ -68,8 +70,8 @@ class LessonController extends Controller
      */
     public function show($id)
     {
-        $lesson = Lesson::find($id);
-        return view('lessons.show',compact('lesson'));
+        $lesson = Lesson::withTrashed()->find($id);
+        return view('lessons.show', compact('lesson'));
     }
 
     /**
@@ -80,62 +82,60 @@ class LessonController extends Controller
      */
     public function edit($id)
     {
-        $post = Lesson::find($id);
+
+        $lesson = Lesson::withTrashed()->find($id);
         return view('lessons.edit', compact('lesson'));
     }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\RedirectResponse
-    //  */
-    // public function update(Request $request, $id)
-    // {
-    //     $post = Lesson::find($id);
-    //     $post->name = $request->name;
-    //     $post->class = $request->class;
-    //     $post->group_id = $request->group_id;
-    //     $post->update();
-    //     $id = $post->post_id;
-    //     return redirect()->route('lesson.show',compact('id'))->with('success', 'Карточка успешна обновлена');
-    // }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $id)
+    {
+        $lesson = Lesson::withTrashed()->find($id);
+        $lesson->name = $request->name;
+        $lesson->class = $request->class;
+        $lesson->teacher = $request->teacher;
+        $lesson->group_id = $request->group_id;
+        $lesson->update();
+        $id = $lesson->id;
+        return redirect()->route('lesson.show', compact('id'))->with('success', 'Карточка успешна обновлена');
+    }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\RedirectResponse
-    //  */
-    // public function destroy($id)
-    // {
-    //     $post = Lesson::find($id);
-    //     $post->delete();
-    //     return redirect()
-    //         ->route('lesson.index')
-    //         ->with('success', 'Карточка успешна удалена');
-    // }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
+    {
+        $lesson = Lesson::withTrashed()->findOrFail($id);
+        if (!$lesson->trashed()) {
+            $lesson->delete();
+        } else {
+            $lesson->forceDelete();
+        }
+        return redirect()
+            ->route('lesson.index')
+            ->with('success', 'Карточка успешна удалена');
+  
+    }
 
-    // public function destroyAdmin(Request $request,$id)
-    // {
-    //     $post = Lesson::withTrashed()->findOrFail($id);
-    //     if(!$post->trashed()){
-    //         $post->delete();
-    //     }
-    //     else {
-    //         $post->forceDelete();
-    //     }
-    //     return redirect()
-    //         ->route('admin.lesson.index')
-    //         ->with('success', 'Карточка успешна удалена');
-    // }
-
-    // public function restoreAdmin(Request $request,$id){
-
-    //     Lesson::onlyTrashed()->find($id)->restore();
-    //     return redirect()
-    //         ->route('admin.lesson.index')
-    //         ->with('success', 'Карточка успешна восстановлена');
-    // }
+    public function destroyAdmin(Request $request, $id)
+    {
+        $lesson = Lesson::withTrashed()->findOrFail($id);
+        if (!$lesson->trashed()) {
+            $lesson->delete();
+        } else {
+            $lesson->forceDelete();
+        }
+        return redirect()
+            ->route('admin.lesson.index')
+            ->with('success', 'Карточка успешна удалена');
+    }
 }

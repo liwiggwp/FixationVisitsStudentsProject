@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[LessonController::class, 'index']);
-Route::get('lesson/',[PostController::class, 'index'])->name('lesson.index');
-Route::get('lesson/create',[PostController::class, 'create'])->name('lesson.create');
-Route::post('lesson/store',[PostController::class, 'store'])->name('lesson.store');
-Route::get('lesson/show/{id}',[PostController::class, 'show'])->name('lesson.show');
-Route::get('lesson/edit/{id}',[PostController::class, 'edit'])->name('lesson.edit');
-Route::post('lesson/update/{id}',[PostController::class, 'update'])->name('lesson.update');
-Route::delete('lesson/{id}', [PostController::class, 'destroy'])->name('lesson.destroy');
+Route::get('lesson/',[LessonController::class, 'index'])->name('lesson.index');
+Route::get('lesson/create',[LessonController::class, 'create'])->name('lesson.create');
+Route::post('lesson/store',[LessonController::class, 'store'])->name('lesson.store');
+Route::get('lesson/show/{id}',[LessonController::class, 'show'])->name('lesson.show');
+Route::get('lesson/edit/{id}',[LessonController::class, 'edit'])->name('lesson.edit');
+Route::post('lesson/update/{id}',[LessonController::class, 'update'])->name('lesson.update');
+Route::delete('lessons/destroy/{id}', [LessonController::class, 'destroy'])->name('lesson.destroy');
 
 Auth::routes();
 
@@ -39,7 +39,6 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
     Route::get('/edit/{id}',[LessonController::class, 'ed'])->name('admin.lesson.edit');
     Route::post('/update/{id}',[LessonController::class, 'upd'])->name('admin.lesson.update');
     Route::delete('/{id}', [LessonController::class, 'destroyAdmin'])->name('admin.lesson.destroy');
-    Route::get('/restore/{id}', [LessonController::class, 'restoreAdmin'])->name('admin.lesson.restore');
 
     Route::get('person/',[UserController::class, 'index'])->name('admin.user.index');
     Route::get('person/show/{id}',[UserController::class, 'view_post'])->name('admin.user.view');
