@@ -30,31 +30,36 @@ class LessonController extends Controller
         // join user_group ON users.id = user_group.user_id
         // join studygroup ON user_group.group_id = studygroup.id
         // WHERE users.id = '1'
-        
+
         if (Auth::check()) {
-            $us_id = Auth::user()->id;
-            $gr_id_us = DB::table('users')
-                ->join('user_group', 'users.id', '=', 'user_group.user_id')
-                ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
-                ->where('users.id', '=', $us_id)
-                ->select('studygroup.id')
-                ->first();
-            $gr_id = null;
-            foreach ($gr_id_us as $i) {
-                $gr_id = $i;
+            if (auth()->user()->isAdmin()) {
+                $lessons = Lesson::whereDate('date', '=', Carbon::now())
+                    ->get();
+            } else {
+                $us_id = Auth::user()->id;
+                $gr_id_us = DB::table('users')
+                    ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                    ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                    ->where('users.id', '=', $us_id)
+                    ->select('studygroup.id')
+                    ->first();
+                $gr_id = null;
+                foreach ($gr_id_us as $i) {
+                    $gr_id = $i;
+                }
+
+                // select * from lessons
+                // WHERE group_id = 1 and `date` = CURRENT_DATE()
+                $lessons = DB::table('lessons')
+                    ->whereDate('date', '=', Carbon::now())
+                    ->where('group_id', '=', $gr_id)
+                    ->get();
+                // $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
+                // return $lessons;
+
+                // $lessons = Lesson::whereDate('date', '=', Carbon::now())
+                // ->get();
             }
-
-            // select * from lessons
-            // WHERE group_id = 1 and `date` = CURRENT_DATE()
-            $lessons = DB::table('lessons')
-                ->whereDate('date', '=', Carbon::now())
-                ->where('group_id', '=', $gr_id)
-                ->get();
-            // $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
-            // return $lessons;
-
-            // $lessons = Lesson::whereDate('date', '=', Carbon::now())
-            // ->get();
         } else {
             $lessons = Lesson::whereDate('date', '=', Carbon::now())
                 ->get();
