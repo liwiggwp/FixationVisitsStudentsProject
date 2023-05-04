@@ -8,14 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
-    public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'name_group',
         // 'group_id',
         // 'les_id',
     ];
-    protected $table = 'groups';
+    protected $table = 'studyGroup';
     protected $connection = 'mysql';
 
+    function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

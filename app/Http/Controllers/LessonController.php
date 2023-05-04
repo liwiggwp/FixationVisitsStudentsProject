@@ -9,9 +9,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Psy\Readline\Hoa\Console;
 
 class LessonController extends Controller
 {
@@ -22,7 +25,40 @@ class LessonController extends Controller
      */
     public function index()
     {
-        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();
+        // SELECT users.id, users.name, studygroup.id 
+        // FROM users 
+        // join user_group ON users.id = user_group.user_id
+        // join studygroup ON user_group.group_id = studygroup.id
+        // WHERE users.id = '1'
+        
+        if (Auth::check()) {
+            $us_id = Auth::user()->id;
+            $gr_id_us = DB::table('users')
+                ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                ->where('users.id', '=', $us_id)
+                ->select('studygroup.id')
+                ->first();
+            $gr_id = null;
+            foreach ($gr_id_us as $i) {
+                $gr_id = $i;
+            }
+
+            // select * from lessons
+            // WHERE group_id = 1 and `date` = CURRENT_DATE()
+            $lessons = DB::table('lessons')
+                ->whereDate('date', '=', Carbon::now())
+                ->where('group_id', '=', $gr_id)
+                ->get();
+            // $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
+            // return $lessons;
+
+            // $lessons = Lesson::whereDate('date', '=', Carbon::now())
+            // ->get();
+        } else {
+            $lessons = Lesson::whereDate('date', '=', Carbon::now())
+                ->get();
+        }
         return view('lessons.index', compact('lessons'));
     }
 
@@ -32,22 +68,22 @@ class LessonController extends Controller
         return view('admin.lessons.index', compact('lessons'));
     }
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     return view('lessons.create',);
-    // }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('lessons.create',);
+    }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\RedirectResponse
-    //  */
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $lesson = new Lesson();
@@ -123,7 +159,6 @@ class LessonController extends Controller
         return redirect()
             ->route('lesson.index')
             ->with('success', 'Карточка успешна удалена');
-  
     }
 
     public function destroyAdmin(Request $request, $id)

@@ -19,5 +19,9 @@ class Lesson extends Model
     protected $connection = 'mysql';
     protected $dates = ['deleted_at'];
     protected $primaryKey = 'id';
-
+    
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 }

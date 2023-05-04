@@ -65,4 +65,10 @@ class User extends Authenticatable
     {
         return $this->surname + ' ' + $this->name + '' + $this->patronymic;
     }
+
+    public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Group::class);
+    }
+
 }
