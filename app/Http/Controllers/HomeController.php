@@ -27,12 +27,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();
-        //  @if (auth()->user()->isAdmin())
         if (Auth::check()) {
             if (auth()->user()->isAdmin()) {
-                $lessons = Lesson::whereDate('date', '=', Carbon::now())
-                    ->get();
+                $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
             } else {
                 $us_id = Auth::user()->id;
                 $gr_id_us = DB::table('users')
@@ -46,17 +43,10 @@ class HomeController extends Controller
                     $gr_id = $i;
                 }
 
-                // select * from lessons
-                // WHERE group_id = 1 and `date` = CURRENT_DATE()
                 $lessons = DB::table('lessons')
                     ->whereDate('date', '=', Carbon::now())
                     ->where('group_id', '=', $gr_id)
                     ->get();
-                // $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
-                // return $lessons;
-
-                // $lessons = Lesson::whereDate('date', '=', Carbon::now())
-                // ->get(); 
             }
         } else {
             $lessons = Lesson::whereDate('date', '=', Carbon::now())

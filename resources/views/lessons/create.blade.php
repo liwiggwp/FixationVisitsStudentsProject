@@ -5,7 +5,7 @@
         <form action="{{url('lesson/store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <h2 style="margin-top: 20px">Создать занятие</h2>
-            @include('posts.parts.post')
+            @include('lessons.parts.lesson')
             <input type="submit" value="Создать занятие" class="btn btn-outline-dark">
         </form>
     </div>
