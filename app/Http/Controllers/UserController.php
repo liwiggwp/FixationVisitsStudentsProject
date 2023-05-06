@@ -31,6 +31,23 @@ class UserController extends Controller
             ->with('success', 'Карточка успешна восстановлена');
     }
 
+    public function view_user($id)
+    {
+        $user = User::find($id);
+
+        // $user = User::where('name', $name)->first();
+
+        # если пользователь не найден в базе
+        if ( ! $user ) abort(404);
+
+
+        // return view('admin.user.view', [
+        //     'user' => $user,
+        // ]);
+        return View::make("admin.user.view")->with(array("user" => $user));
+
+    }
+
     public function view_post($id){
         $user = User::find($id);
 

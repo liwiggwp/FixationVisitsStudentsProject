@@ -4,6 +4,7 @@
 
 
     <h2 style="padding: 20px; text-align: center">Все пользователи</h2>
+    <a href="{{ route('register') }}" class="btn btn-dark">Создать</a>
 
     <table class="table">
         <thead>
@@ -22,7 +23,7 @@
             <td style="padding: 20px; text-align: center"> {{$user->email}}</td>
             <td style="padding: 20px; text-align: center">
                 <a href="{{route('admin.user.view',['id'=>$user->id])}}"
-               class="btn btn-warning">Просмотр карточек</a></td>
+               class="btn btn-warning">Просмотр</a></td>
         </tr>
 
         @endforeach

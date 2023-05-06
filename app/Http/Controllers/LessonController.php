@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Psy\Readline\Hoa\Console;
 
+use function Psy\debug;
+
 class LessonController extends Controller
 {
     /**
@@ -103,8 +105,48 @@ class LessonController extends Controller
      */
     public function show($id)
     {
+        $users = DB::table('lessons')
+            ->join('user_group', 'lessons.group_id', '=', 'user_group.group_id')
+            ->join('users', 'user_group.user_id', '=', 'users.id')
+            ->where('lessons.id', '=', $id)
+            ->select('users.id', 'users.surname', 'users.name', 'users.patronymic')
+            ->get();
+
+        $visits = collect();
+        foreach ($users as $u) {
+            $visits->push(DB::table('user_visit_lesson')
+                ->where('user_visit_lesson.user_id', '=', $u->id)
+                ->select('user_visit_lesson.is_visits')
+                ->get());
+        }
+        $visissss = collect();
+
+        foreach ($visits as $v){
+            foreach ($v as $v2){
+                $visissss->push($v2);                
+            }
+        }
+        
+        $count_us = $users->count();
+        $array = json_decode($users, 1);
+        $array2 = json_decode($visissss, 1);
+        $new_array = array_replace_recursive($array, $array2);
+
+        // $json = json_encode($new_array, 1);
+        // $users = (collect($new_array));
+        // $users = (object)$new_array;
+
+        
+        $users = collect($new_array);
+        $users= $users->toArray();
         $lesson = Lesson::withTrashed()->find($id);
-        return view('lessons.show', compact('lesson'));
+        return view('lessons.show', compact('lesson'), compact('users'));
+
+        // $visit = DB::table('user_visit_lesson')
+        //     ->where('user_visit_lesson.les_id', '=', $id)
+        //     ->select('user_visit_lesson.les_id', 'user_visit_lesson.user_id', 'user_visit_lesson.is_visits')
+        //     ->get();
+        // return $users[0]['surname'];
     }
 
     /**
@@ -134,6 +176,8 @@ class LessonController extends Controller
         $lesson->class = $request->class;
         $lesson->teacher = $request->teacher;
         $lesson->group_id = $request->group_id;
+        $time = Carbon::parse($request->date);
+        $lesson->date = $time;
         $lesson->update();
         $id = $lesson->id;
         return redirect()->route('lesson.show', compact('id'))->with('success', 'Карточка успешна обновлена');

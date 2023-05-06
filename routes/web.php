@@ -42,7 +42,7 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
     Route::delete('/{id}', [LessonController::class, 'destroyAdmin'])->name('admin.lesson.destroy');
 
     Route::get('person/',[UserController::class, 'index'])->name('admin.user.index');
-    Route::get('person/show/{id}',[UserController::class, 'view_post'])->name('admin.user.view');
+    Route::get('person/show/{id}',[UserController::class, 'view_user'])->name('admin.user.view');
     Route::get('person/restore/{id}', [UserController::class, 'restoreUser'])->name('admin.user.restore');
 
     Route::get('group/',[UserController::class, 'index'])->name('admin.user.index');

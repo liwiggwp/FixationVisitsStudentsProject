@@ -6,7 +6,7 @@ use App\Models\Lesson;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class GroupController extends Controller
 {
     /**
      * Show the application dashboard.
