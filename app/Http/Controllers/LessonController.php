@@ -69,6 +69,7 @@ class LessonController extends Controller
     public function create()
     {
         return view('lessons.create',);
+        
     }
 
     /**
@@ -80,20 +81,28 @@ class LessonController extends Controller
     public function store(Request $request)
     {
         $lesson = new Lesson();
-        // $post->user_id = Auth::user()->id;
         $lesson->name = $request->name;
         $lesson->class = $request->class;
         $lesson->teacher = $request->teacher;
         $lesson->group_id = $request->group_id;
-        // $lesson->date = date("Y-m-d h:i", strtotime( $request->date));
         $time = Carbon::parse($request->date);
         $lesson->date = $time;
-        // $time = strtotime($request->date);
 
-        // $newformat = date('Y-m-d', $time);
-        // return $time;
         $lesson->save();
 
+        $last_les = DB::table('lessons')->orderByDesc('id')->limit(1)->get();
+
+        $users = DB::table('user_group')
+            ->join('users', 'user_group.user_id', '=', 'users.id')
+            ->where('user_group.group_id', '=', $last_les[0]->group_id)
+            ->get();
+        foreach ($users as $u) {
+            DB::table('user_visit_lesson')->insert([
+                'les_id' => $last_les[0]->id,
+                'user_id' => $u->id,
+                'is_visits' => 0
+            ]);
+        }    
         return redirect()->route('lesson.index')->with('success', 'Карточка успешна создана');
     }
 
@@ -115,38 +124,27 @@ class LessonController extends Controller
         $visits = collect();
         foreach ($users as $u) {
             $visits->push(DB::table('user_visit_lesson')
+                ->where('user_visit_lesson.les_id', '=', $id)
                 ->where('user_visit_lesson.user_id', '=', $u->id)
                 ->select('user_visit_lesson.is_visits')
                 ->get());
         }
         $visissss = collect();
 
-        foreach ($visits as $v){
-            foreach ($v as $v2){
-                $visissss->push($v2);                
+        foreach ($visits as $v) {
+            foreach ($v as $v2) {
+                $visissss->push($v2);
             }
         }
-        
-        $count_us = $users->count();
+
         $array = json_decode($users, 1);
         $array2 = json_decode($visissss, 1);
         $new_array = array_replace_recursive($array, $array2);
 
-        // $json = json_encode($new_array, 1);
-        // $users = (collect($new_array));
-        // $users = (object)$new_array;
-
-        
         $users = collect($new_array);
-        $users= $users->toArray();
+        $users = $users->toArray();
         $lesson = Lesson::withTrashed()->find($id);
         return view('lessons.show', compact('lesson'), compact('users'));
-
-        // $visit = DB::table('user_visit_lesson')
-        //     ->where('user_visit_lesson.les_id', '=', $id)
-        //     ->select('user_visit_lesson.les_id', 'user_visit_lesson.user_id', 'user_visit_lesson.is_visits')
-        //     ->get();
-        // return $users[0]['surname'];
     }
 
     /**
