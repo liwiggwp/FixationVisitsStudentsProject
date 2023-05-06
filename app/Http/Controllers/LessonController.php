@@ -69,7 +69,6 @@ class LessonController extends Controller
     public function create()
     {
         return view('lessons.create',);
-        
     }
 
     /**
@@ -102,10 +101,48 @@ class LessonController extends Controller
                 'user_id' => $u->id,
                 'is_visits' => 0
             ]);
-        }    
+        }
         return redirect()->route('lesson.index')->with('success', 'Карточка успешна создана');
     }
+    public function pp(Request $request, $id)
+    {
+        $input = $request->all();
+        $temp = collect();
+        foreach ($input as $key => $value) {
+            $temp->push($key);
+        }
+        $temp->shift();
 
+        DB::table('user_visit_lesson')
+            ->where('user_visit_lesson.les_id', '=', $id)
+            ->where('user_visit_lesson.user_id', '=', $temp)
+            ->update(['is_visits' => 1]);
+        $f = DB::table('user_visit_lesson')
+            ->where('user_visit_lesson.les_id', '=', $id)->get();
+        $ro = '/lesson/show/' . $id;
+
+        return redirect()->to($ro);
+    }
+    public function nn(Request $request, $id)
+    {
+        $input = $request->all();
+        $temp = collect();
+        foreach ($input as $key => $value) {
+            $temp->push($key);
+        }
+        $temp->shift();
+
+        DB::table('user_visit_lesson')
+            ->where('user_visit_lesson.les_id', '=', $id)
+            ->where('user_visit_lesson.user_id', '=', $temp)
+            ->update(['is_visits' => 0]);
+        $f = DB::table('user_visit_lesson')
+            ->where('user_visit_lesson.les_id', '=', $id)->get();
+
+        // return $f;
+        $ro = '/lesson/show/' . $id;
+        return redirect()->to($ro);
+    }
     /**
      * Display the specified resource.
      *
@@ -120,7 +157,7 @@ class LessonController extends Controller
             ->where('lessons.id', '=', $id)
             ->select('users.id', 'users.surname', 'users.name', 'users.patronymic')
             ->get();
-
+        $us = $users;
         $visits = collect();
         foreach ($users as $u) {
             $visits->push(DB::table('user_visit_lesson')
@@ -144,6 +181,7 @@ class LessonController extends Controller
         $users = collect($new_array);
         $users = $users->toArray();
         $lesson = Lesson::withTrashed()->find($id);
+
         return view('lessons.show', compact('lesson'), compact('users'));
     }
 

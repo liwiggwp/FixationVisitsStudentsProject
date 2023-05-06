@@ -45,16 +45,26 @@
                                     <h6 style="color: red;">Н</h6>
                                     @endif
                                 </div>
-                                
+
                                 <div class="col col-lg-2">
                                     <div class="card">
                                         @auth()
                                         @if(Auth::user()->isAdmin())
                                         @if ($user['is_visits'] == 1)
-                                        <input type="submit" class="btn btn-outline-danger " value="Убрать">
+                                        <!-- <a href="{{route('nn',['id'=>$lesson->id])}}" class="btn btn-outline-danger">Убрать</a> -->
+                                        <form action="{{route('nn',['id'=>$lesson->id])}}" method="post">
+                                            @csrf
+                                            <input type="submit" class="btn btn-outline-danger" value="Убрать" name="{{$user['id'] ?? ''}}">
+                                        </form>
+                                       
                                         @endif
                                         @if ($user['is_visits'] == 0)
-                                        <input type="submit" class="btn btn-outline-primary" value="Поставить">
+                                        <!-- <a href="{{route('pp',['id'=>$lesson->id])}}" class="btn btn-outline-primary">Поставить</a> -->
+
+                                        <form action="{{route('pp',['id'=>$lesson->id])}}" method="post">
+                                            @csrf
+                                            <input type="submit" class="btn btn-outline-primary" value="Поставить" name="{{$user['id'] ?? ''}}">
+                                        </form>
                                         @endif
                                         @endif
                                         @endauth

@@ -23,6 +23,8 @@ Route::get('lesson/show/{id}',[LessonController::class, 'show'])->name('lesson.s
 Route::get('lesson/edit/{id}',[LessonController::class, 'edit'])->name('lesson.edit');
 Route::post('lesson/update/{id}',[LessonController::class, 'update'])->name('lesson.update');
 Route::delete('lessons/destroy/{id}', [LessonController::class, 'destroy'])->name('lesson.destroy');
+Route::post('pp/{id}', [LessonController::class, 'pp'])->name('pp');
+Route::post('nn/{id}', [LessonController::class, 'nn'])->name('nn');
 
 Auth::routes();
 
@@ -46,7 +48,8 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
     Route::get('person/restore/{id}', [UserController::class, 'restoreUser'])->name('admin.user.restore');
 
     Route::get('group/',[UserController::class, 'index'])->name('admin.user.index');
-
+    Route::post('pp/{id}', [LessonController::class, 'pp'])->name('pp');
+    Route::post('nn/{id}', [LessonController::class, 'nn'])->name('nn');
 });
 
 // /*
