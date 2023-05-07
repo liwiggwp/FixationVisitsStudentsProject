@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,7 @@ Auth::routes();
  */
 
 Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
+    Route::get('/register',[RegisterController::class, 'create'])->name('admin.register.create');
     Route::get('/',[\App\Http\Controllers\Admin\HomeController::class,'index'])->name('homeAdmin');
     Route::get('admin/',[LessonController::class, 'indexAdmin'])->name('admin.lesson.index');
     Route::get('/create',[LessonController::class, 'cre'])->name('admin.lesson.create');
@@ -44,10 +47,11 @@ Route::middleware(['role:admin'])->prefix('admin_panel')->group(function (){
     Route::delete('/{id}', [LessonController::class, 'destroyAdmin'])->name('admin.lesson.destroy');
 
     Route::get('person/',[UserController::class, 'index'])->name('admin.user.index');
+    Route::post('person/update/{id}',[UserController::class, 'update'])->name('admin.user.update');
     Route::get('person/show/{id}',[UserController::class, 'view_user'])->name('admin.user.view');
     Route::get('person/restore/{id}', [UserController::class, 'restoreUser'])->name('admin.user.restore');
 
-    Route::get('group/',[UserController::class, 'index'])->name('admin.user.index');
+    Route::get('group/',[GroupController::class, 'index'])->name('admin.group.index');
     Route::post('pp/{id}', [LessonController::class, 'pp'])->name('pp');
     Route::post('nn/{id}', [LessonController::class, 'nn'])->name('nn');
 });

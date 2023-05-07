@@ -18,12 +18,26 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')->paginate(15);
+        // $users = DB::table('users')->paginate(15);
 
-        return view('admin.user.index', ['users' => $users]);
+        // SELECT user_group.*
+        // FROM users join user_group ON users.id = user_group.user_id
+        // WHERE users.id = '2'
+
+        $users = DB::table('users')
+            ->join('user_group', 'users.id', '=', 'user_group.user_id')
+            ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+            // ->where('users.id', '=', $last_les[0]->group_id)
+            ->get();
+        // select * from studygroup
+        $groups = DB::table('studygroup')->get();
+
+        // return    $gr;
+        return view('admin.user.index', compact('users'), compact('groups'));
     }
 
-    public function restoreUser(Request $request,$id){
+    public function restoreUser(Request $request, $id)
+    {
 
         Lesson::onlyTrashed()->find($id)->restore();
         return redirect()
@@ -38,17 +52,17 @@ class UserController extends Controller
         // $user = User::where('name', $name)->first();
 
         # если пользователь не найден в базе
-        if ( ! $user ) abort(404);
+        if (!$user) abort(404);
 
 
         // return view('admin.user.view', [
         //     'user' => $user,
         // ]);
         return View::make("admin.user.view")->with(array("user" => $user));
-
     }
 
-    public function view_post($id){
+    public function view_post($id)
+    {
         $user = User::find($id);
 
         $posts = $user->posts()->withTrashed()->get();
@@ -85,13 +99,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-       //$posts = User::find($id)->post;
-       // return view('admin.user.show',compact('users'));
-//        $user = User::find($id);
-//        $posts = $user->posts()->get();
-//        return view('admin.user.show',compact('posts'));
+        //$posts = User::find($id)->post;
+        // return view('admin.user.show',compact('users'));
+        //        $user = User::find($id);
+        //        $posts = $user->posts()->get();
+        //        return view('admin.user.show',compact('posts'));
 
-//compact --> ['posts'=>$posts]
+        //compact --> ['posts'=>$posts]
     }
 
     /**
@@ -114,7 +128,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $input = $request->all();
+        // $temp = collect();
+        // foreach ($input as $key => $value) {
+        //     $temp->push($key);
+        // }
+        // $temp->shift();
+
+        // DB::table('user_group')
+        //     ->where('user_group.user_id', '=', $id)
+        //     ->update(['group_id' => 1]);
+        // return $input;
+        $ro = '/admin_panel/person';
+        return redirect()->to($ro)->with('success', 'Обновлено');
+
     }
 
     /**

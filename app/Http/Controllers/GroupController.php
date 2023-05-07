@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Lesson;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
@@ -15,7 +17,10 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $lessons = Lesson::withTrashed()->whereDate('date', '=', Carbon::now())->get();
-        return view('lessons.index', compact('lessons'));
+        // $groups = DB::table('groups')
+        // ->select('groups.*')
+        //     ->get();
+        return view('admin.group.index');
+        // return 'index group';
     }
 }
