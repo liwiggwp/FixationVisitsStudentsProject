@@ -18,9 +18,20 @@
 <div class="form-group">
     <input type="text" class="form-control" name="class" placeholder="Аудитория" required value="{{$lesson->class ?? ''}}">
 </div>
-<div class="form-group">
+<!-- <div class="form-group">
     <input type="text" class="form-control" name="teacher" placeholder="Преподаватель" required value="{{$lesson->teacher ?? ''}}">
+</div> -->
+<div class="form-group">
+    <select class="form-control input-sm" name="teacher">
+        <option value="">Выбор</option>
+        
+        <option value="1" required value="{{$lesson->teacher ?? ''}}">Преподаватель Преподаватель Преподаватель</option>
+        <option value="2" required value="{{$lesson->teacher ?? ''}}">Преподаватель2 Преподаватель2 Преподаватель2</option>
+        <option value="3" required value="{{$lesson->teacher ?? ''}}">Преподаватель3 Преподаватель3 Преподаватель3</option>
+        <option value="4" required value="{{$lesson->teacher ?? ''}}">Преподаватель4 Преподаватель4 Преподаватель4</option>
+    </select>
 </div>
+
 <!-- <div class="form-group">
     <input type="text" class="form-control" name="group_id" placeholder="Группа" required value="{{$lesson->group_id ?? ''}}">
 </div> -->
@@ -29,8 +40,9 @@
     <select class="form-control input-sm" name="group_id">
         <option value="">Выбор</option>
         
-        <option value="1" required value="{{$lesson->group_id ?? ''}}">Группа 1</option>
-        <option value="2" required value="{{$lesson->group_id ?? ''}}">Группа 2</option>
+        <option value="1" required value="{{$lesson->group_id ?? ''}}">ИП-22-11</option>
+        <option value="2" required value="{{$lesson->group_id ?? ''}}">ИП-22-14</option>
+        <option value="3" required value="{{$lesson->group_id ?? ''}}">ЗИО-21-09</option>
     </select>
 </div>
 
@@ -51,7 +63,8 @@
 <script>
         $(function () {
             var loader = $('#loader'),
-                category = $('select[name="group_id"]');
+                category = $('select[name="group_id"]'),
+                categor = $('select[name="teacher"]');
 
             loader.hide();          
         })

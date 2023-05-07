@@ -14,12 +14,13 @@
                         <h4>Название: {{$lesson->name}}</h4>
                         <h6>Аудитория: {{$lesson->class}}</h6>
                         <h6>Преподаватель: {{$lesson->teacher}}</h6>
-                        <h6>Группа: {{$lesson->group_id}}</h6>
+                        <h6>Группа: {{$lesson->name_group}}</h6>
                         <a href="{{route('lesson.show',['id'=>$lesson->id])}}"
                            class="btn btn-outline-dark">Посмотреть</a>
                     </div>
                 </div>
             </div>
+                
         @endforeach
     </div>
 

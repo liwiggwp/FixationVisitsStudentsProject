@@ -28,9 +28,10 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            if (auth()->user()->isAdmin()) {
+            if (auth()->user()->isAdmin()??auth()->user()->isTeacher()) {
                 $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
-            } else {
+            } 
+            else if(auth()->user()->isUser()){
                 $us_id = Auth::user()->id;
                 $gr_id_us = DB::table('users')
                     ->join('user_group', 'users.id', '=', 'user_group.user_id')
@@ -47,6 +48,10 @@ class HomeController extends Controller
                     ->whereDate('date', '=', Carbon::now())
                     ->where('group_id', '=', $gr_id)
                     ->get();
+            }
+            else {
+                $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
+
             }
         } else {
             $lessons = Lesson::whereDate('date', '=', Carbon::now())

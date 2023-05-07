@@ -50,7 +50,14 @@ class User extends Authenticatable
     {
         return $this->roles()->where('role_id', 1)->first();
     }
-
+    public function isTeacher()
+    {
+        return $this->roles()->where('role_id', 2)->first();
+    }
+    public function isUser()
+    {
+        return $this->roles()->where('role_id', 2)->first();
+    }
     protected $table = "users";
 
 

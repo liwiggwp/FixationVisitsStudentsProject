@@ -29,30 +29,82 @@ class LessonController extends Controller
     {
         if (Auth::check()) {
             if (auth()->user()->isAdmin()) {
-                $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
-            } else {
-                $us_id = Auth::user()->id;
-                $gr_id_us = DB::table('users')
+                $lessons =   DB::table('users')
                     ->join('user_group', 'users.id', '=', 'user_group.user_id')
                     ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
-                    ->where('users.id', '=', $us_id)
-                    ->select('studygroup.id')
-                    ->first();
-                $gr_id = null;
-                foreach ($gr_id_us as $i) {
-                    $gr_id = $i;
-                }
-
-                $lessons = DB::table('lessons')
+                    ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+                    ->whereDate('date', '=', Carbon::now())->get();
+            } 
+            else {
+                $us_id = Auth::user()->id;
+                // $lessons = DB::table('users')
+                //     ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                //     ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                //     ->where('users.id', '=', $us_id)
+                //     ->select('studygroup.id', 'studygroup.name_group')
+                //     ->first();
+                $lessons = DB::table('users')
+                    ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                    ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                    ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
                     ->whereDate('date', '=', Carbon::now())
-                    ->where('group_id', '=', $gr_id)
-                    ->get();
+                    ->where('users.id', '=', $us_id)->get();
+                // $gr_id = null;
+                // foreach ($gr_id_us as $i) {
+                //     $gr_id = $i;
+                // }
+                // // $gr_id_us2 = DB::table('users')
+                // //     ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                // //     ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                // //     // ->where('users.id', '=', $us_id)
+                // //     ->select('studygroup.name_group')
+                // //     ->get();
+                // // // $all =  json_encode($gr_id_us2, JSON_UNESCAPED_UNICODE);
+                // // $all = $gr_id_us2[0]->name_group;
+                // $lessons = DB::table('lessons')
+                //     // ->join('studygroup', 'user_group.group_id', '=', $gr_id)
+                //     ->whereDate('date', '=', Carbon::now())
+                //     ->where('group_id', '=', $gr_id)
+                //     ->get();
+                // return ;
             }
-        } else {
-            $lessons = Lesson::whereDate('date', '=', Carbon::now())
-                ->get();
+        } 
+        else {
+            $lessons = DB::table('users')
+                ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+                ->whereDate('date', '=', Carbon::now())->get();
         }
         return view('lessons.index', compact('lessons'));
+        // $lessons =   DB::table('users')
+        // ->join('user_group', 'users.id', '=', 'user_group.user_id')
+        // ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+        // ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+        // ->whereDate('date', '=', Carbon::now())->get();
+        // return $lessons;
+
+        // // $lessons = DB::table('lessons')
+        // //     ->join('studygroup', 'lessons.group_id', '=', 'studygroup.group_id')
+        // //     ->join('user_group', 'studygroup.user_id', '=', 'user_group.user_id')
+        // //     ->join('users', 'users.id', '=', 'user_group.user_id')
+        // //     ->whereDate('date', '=', Carbon::now())
+        // //     // ->where('group_id', '=', $gr_id)
+        // //     ->get();
+        // // $us_id = Auth::user()->id;
+        // $gr_id_us = DB::table('users')
+        //     ->join('user_group', 'users.id', '=', 'user_group.user_id')
+        //     ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+        //     ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+        //     ->whereDate('date', '=', Carbon::now())->get();
+        //     // ->where('users.id', '=', $us_id)
+        //     // ->select('studygroup.id', 'studygroup.name_group')
+
+        // // $gr_id = null;
+        // // foreach ($gr_id_us as $i) {
+        // //     $gr_id = $i;
+        // // }
+        // return $gr_id_us;
     }
 
     public function indexAdmin()
@@ -83,6 +135,7 @@ class LessonController extends Controller
         $lesson->name = $request->name;
         $lesson->class = $request->class;
         $lesson->teacher = $request->teacher;
+
         $lesson->group_id = $request->group_id;
         $time = Carbon::parse($request->date);
         $lesson->date = $time;
