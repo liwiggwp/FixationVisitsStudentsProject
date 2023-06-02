@@ -28,34 +28,29 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            if (auth()->user()->isAdmin()??auth()->user()->isTeacher()) {
-                $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
-            } 
-            else if(auth()->user()->isUser()){
-                $us_id = Auth::user()->id;
-                $gr_id_us = DB::table('users')
+            if (auth()->user()->isAdmin()) {
+                $lessons =   DB::table('users')
                     ->join('user_group', 'users.id', '=', 'user_group.user_id')
                     ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
-                    ->where('users.id', '=', $us_id)
-                    ->select('studygroup.id')
-                    ->first();
-                $gr_id = null;
-                foreach ($gr_id_us as $i) {
-                    $gr_id = $i;
-                }
-
-                $lessons = DB::table('lessons')
-                    ->whereDate('date', '=', Carbon::now())
-                    ->where('group_id', '=', $gr_id)
-                    ->get();
-            }
+                    ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+                    ->whereDate('date', '=', Carbon::now())->get();
+            } 
             else {
-                $lessons = Lesson::whereDate('date', '=', Carbon::now())->get();
-
+                $us_id = Auth::user()->id;
+                $lessons = DB::table('users')
+                    ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                    ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                    ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+                    ->whereDate('date', '=', Carbon::now())
+                    ->where('users.id', '=', $us_id)->get();
             }
-        } else {
-            $lessons = Lesson::whereDate('date', '=', Carbon::now())
-                ->get();
+        } 
+        else {
+            $lessons = DB::table('users')
+                ->join('user_group', 'users.id', '=', 'user_group.user_id')
+                ->join('studygroup', 'user_group.group_id', '=', 'studygroup.id')
+                ->join('lessons', 'lessons.group_id', '=', 'studygroup.id')
+                ->whereDate('date', '=', Carbon::now())->get();
         }
         return view('lessons.index', compact('lessons'));
     }

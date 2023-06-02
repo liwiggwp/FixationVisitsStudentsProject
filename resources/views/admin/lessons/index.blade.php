@@ -3,7 +3,7 @@
 @section('content')
 
 
-<h2 style="padding: 20px; text-align: center">Все карточки</h2>
+<h2 style="padding: 20px; text-align: center">Все карточки с занятиями</h2>
 <a href="{{route('lesson.create')}}" class="btn btn-dark">Создать</a>
 
 <div class="row row-cols-1 row-cols-2 row-cols-3">
@@ -17,19 +17,10 @@
                 <h4>Название: {{$lesson->name}}</h4>
                 <h6>Аудитория: {{$lesson->class}}</h6>
                 <h6>Преподаватель: {{$lesson->teacher}}</h6>
-                <h6>Группа: {{$lesson->group_id}}</h6>
-                @if($lesson->trashed())
-                <a href="{{route('admin.lesson.restore',['id'=>$lesson->id])}}" class="btn btn-outline-success">Восстановить</a>
-                <form action="{{route('admin.lesson.destroy',['id'=>$lesson->id])}}" method="post"> @csrf
-                    @csrf
-                    @method('DELETE')
-                    <input type="submit" class="btn btn-outline-danger" value="Удалить">
-                </form>
-
-                @endif
-                @if(!($lesson->trashed()))
+                <h6>Группа: {{$lesson->name_group}}</h6>
+              
                 <a href="{{route('lesson.show',['id'=>$lesson->id])}}" class="btn btn-outline-dark">Посмотреть</a>
-                @endif
+                
             </div>
         </div>
     </div>

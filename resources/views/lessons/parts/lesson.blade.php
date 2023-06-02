@@ -50,17 +50,18 @@
     <input type="datetime-local" class="form-control" name="date" required value="{{$lesson->date ?? ''}}">
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+    
     config = {
         enableTime: true,
         dateFormat: 'Y-m-d H:i',
+        "locale": "ru"
     }
     flatpickr("input[type=datetime-local]", config);
 </script>
 
-<script>
+<!-- <script>
         $(function () {
             var loader = $('#loader'),
                 category = $('select[name="group_id"]'),
@@ -68,4 +69,4 @@
 
             loader.hide();          
         })
-    </script>
+    </script> -->
